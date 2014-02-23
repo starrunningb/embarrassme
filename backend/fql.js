@@ -125,8 +125,8 @@ function weighting(obj1, obj2, tolerance) {
 	var delta = function(x1, x2) {
 		return (x2 - x1) / (Math.max(x1, x2));
 	}
-	var dl = delta(obj2.like_info.like_count, obj1.like_info.like_count);
-	var dc = delta(obj2.comment_info.comment_count, obj1.comment_info.comment_count);
+	var dl = Math.max(delta(obj2.like_info.like_count, obj1.like_info.like_count), 0);
+	var dc = Math.max(delta(obj2.comment_info.comment_count, obj1.comment_info.comment_count), 0);
 	return dl * like_weight + dc * comment_weight;
 }
 
@@ -136,7 +136,7 @@ function getFilteredLikes(photos) {
 		var obj1 = photos[obji];
 		var obj2 = photos[obji + 1];
 		var w = weighting(obj1, obj2);
-		if (w > tolerance) {
+		if (w < tolerance) {
 			topPhotos[topPhotos.length] = obj1;
 			weights[weights.length] = w;
 		}
