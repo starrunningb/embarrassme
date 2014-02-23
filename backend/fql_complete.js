@@ -1,12 +1,13 @@
 var FB = require('./fb');
 
-var accesstoken = "CAACEdEose0cBALjXnr9FVrivMkFUA4uknJcLjZCFbta7MzVoKKZAwPylHJ6YjjrsZAiR2fTU0AoX07DQJ1Me0HskPRDH9ZBm4owwFUilTRvObYr6MPjM4RL72ZBNORhkdhCZAyZCmvJ8yDYU1Ssr22WPe15wthqNH9BTszidyZCZBtvZB7ZCFwcTFcZADoZAQJhZA8CGoZD";
+
+var accesstoken = "CAACEdEose0cBABpw34V2oZCh945ZCYW6OZB8v6AE69kKpksZBRwEAW2wO3n5iqsnTvd3dypAFnEFYuS8SFd1Ps4B1KhDZAWHTTKIB28cHeSuqCu03aUcntJteVauTwTcNngFx6Hhk3hQVbbFW44e0cXbqf2OeKgwg7kohyBeRDVhdUW9FoBihOa00IJuXT1AZD";
 
 FB.setAccessToken(accesstoken);
 
 var userPhotos = [];
 
-var tolerance = 0.5;
+var tolerance = 0;
 var like_weight = 0.6;
 var comment_weight = 0.4;
 var heapObj = new Heap();
@@ -48,22 +49,18 @@ function getPhotos(newestTime, photos){
 //needs to be tested
 function getPhotoComments(photo, photos){
 	console.log(photo.object_id);
-	FB.api('/' + photo.object_id, function(response){
-		console.log(response);
+	FB.api(photo.object_id, function(response){
+		console.log("Adding photo comment");
 	        photo.comments = response.comments;  
-		photos.commentsRetrieved++;
         });
 }
 
 //needs to be tested
 function addComments(photos){
-	photos.commentsRetrieved = 0;
-
 	for(var i = 0; i < photos.length; i++){
 		getPhotoComments(photos[i], photos);
 	}
 
-	while(photos.commentsRetrieved != photos.length);
 	return;
 };
 
@@ -104,12 +101,17 @@ setTimeout(function(){
 	tempPhotos.push(userPhotos[7]);
 	tempPhotos.push(userPhotos[1]);
 
-	console.log(tempPhotos);
 	addComments(tempPhotos);
-	console.log(tempPhotos);
 
-	var filtered = getFilteredLikes(photos);
-	console.log(filtered);
+	setTimeout(function(){
+//		console.log(tempPhotos);
+	}, 1000);
+	
+	var filtered = getFilteredLikes(userPhotos);
+	for(var i = 0; i < filtered.length; i++)
+		console.log(filtered[i].link);
+
+	console.log(filtered.length);
 }, 10000);
 
 
