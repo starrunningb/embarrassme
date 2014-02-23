@@ -30,7 +30,7 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new FacebookStrategy({
     clientID: FACEBOOK_APP_ID,
     clientSecret: FACEBOOK_APP_SECRET,
-    callbackURL: "http://localhost:3000/auth/facebook/callback"
+    callbackURL: "http://localhost:3000/auth/facebook/callback" // try to change this to something else
   },
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
@@ -54,8 +54,8 @@ var app = express();
 
 // configure Express
 app.configure(function() {
-  app.set('views', __dirname + '/views');
-  app.set('view engine', 'ejs');
+  app.set('views', __dirname + '/templates'); // changed from views to templates
+  app.set('view engine', 'html');
   app.use(express.logger());
   app.use(express.cookieParser());
   app.use(express.bodyParser());
@@ -66,11 +66,11 @@ app.configure(function() {
   app.use(passport.initialize());
   app.use(passport.session());
   app.use(app.router);
-  app.use(express.static(__dirname + '/public'));
+  app.use(express.static(__dirname + '/static')); // changed from public to static
 });
 
 
-app.get('/', function(req, res){
+app.get('/index.html', function(req, res){ // changed url from '/' to '/index.html'
   res.render('index', { user: req.user });
 });
 
@@ -78,7 +78,7 @@ app.get('/account', ensureAuthenticated, function(req, res){
   res.render('account', { user: req.user });
 });
 
-app.get('/login', function(req, res){
+app.get('/login', function(req, res){ // this will have to change to an action rather than a render
   res.render('login', { user: req.user });
 });
 
@@ -102,12 +102,12 @@ app.get('/auth/facebook',
 app.get('/auth/facebook/callback', 
   passport.authenticate('facebook', { failureRedirect: '/login' }),
   function(req, res) {
-    res.redirect('/');
+    res.redirect('/index.html'); // changed from '/' to '/index.html'
   });
 
 app.get('/logout', function(req, res){
   req.logout();
-  res.redirect('/');
+  res.redirect('/index.html'); // changed from '/' to '/index.html'
 });
 
 app.listen(3000);

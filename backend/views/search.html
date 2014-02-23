@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<!-- saved from url=(0039)http://getbootstrap.com/examples/cover/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    
+
+    <title>EmbarassMe</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="public/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="public/css/cover.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+  
+
+
+
+    <div class="site-wrapper">
+
+      <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+
+          <div class="masthead clearfix">
+            <div class="inner">
+              <h3 class="masthead-brand"><a href="index.html">EmbarassMe</a></h3>
+              <ul class="nav masthead-nav">
+                <li class="active"><a href="index.html/#">Home</a></li>
+                <li><a href="how.html/#">How it Works</a></li>
+                <li><a href="contact.html/#">Contact</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="inner cover">
+           <div id="slider1_container" style="position: relative; top: 0px; left: 0px; width: 600px; height: 300px;">
+    <!-- Slides Container -->
+    <div u="slides" style="cursor: move; position: absolute; overflow: hidden; left: 0px; top: 0px; width: 600px; height: 300px;">
+    
+    
+        <div><img u="image" src="images/image1.jpg" /></div>
+        <div><img u="image" src="images/image2.jpeg" /></div>
+        
+    </div>
+    <!-- DirectionNavigator Skin Begin -->
+        <!-- Arrow Left -->
+<span u="arrowleft" class="slider1-AL"
+style="width: 55px; height: 55px; top: 122px; left: 8px;">
+</span>
+<!-- Arrow Right -->
+<span u="arrowright" class="slider1-AR"
+style="width: 55px; height: 55px; top: 122px; right: 8px;">
+</span>
+    <!-- DirectionNavigator Skin End -->
+</div>
+<br/> 
+            <p class="lead">
+              <a href="search.html#" class="btn btn-lg btn-default">Share on Facebook</a>
+            </p>
+          
+          </div>
+
+          <div class="mastfoot">
+            <div class="inner">
+              Built by Eric Song, Timothy Yong & Shawn Jaison.
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="./public/index_files/jquery.min.js"></script>
+    <script src="./public/index_files/bootstrap.min.js"></script>
+    <script src="./public/index_files/docs.min.js"></script>
+  <script src="public/js/jssor.slider.mini.js"></script>
+<script>
+    jQuery(document).ready(function ($) {
+        var options = {
+            $DirectionNavigatorOptions: {
+                $Class: $JssorDirectionNavigator$,
+                $ChanceToShow: 2
+            }
+        };
+        var jssor_slider1 = new $JssorSlider$('slider1_container', options);
+    });
+</script>
+
+</body></html>
