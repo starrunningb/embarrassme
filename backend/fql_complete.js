@@ -16,7 +16,7 @@ function getPhotos(newestTime, photos){
 		    method: 'fql.multiquery',
 		    queries: {
 			'query1': query1string,
-			'query2': 'SELECT like_info, link, pid, created FROM photo WHERE pid IN (SELECT pid FROM #query1)'
+			'query2': 'SELECT object_id, like_info, link, pid, created FROM photo WHERE pid IN (SELECT pid FROM #query1)'
 		    }
 	}, function(response) {
 		    // response should have 2 objects in it, both containing an fql_result_set 
@@ -26,7 +26,7 @@ function getPhotos(newestTime, photos){
 
 		for(var i = 0; i < response[1].fql_result_set.length; i++){
 			userPhotos.push(response[1].fql_result_set[i]);
-			console.log(response[1].fql_result_set[i]);
+			//console.log(response[1].fql_result_set[i]);
 
 			if(i == response[1].fql_result_set.length-1)
 				latestTime = response[1].fql_result_set[i].created;
@@ -39,6 +39,43 @@ function getPhotos(newestTime, photos){
 		}
 	});
 };
+
+//needs to be tested
+function getPhotoComments(photo, photos){
+	console.log(photo.object_id);
+	FB.api('/' + photo.object_id, function(response){
+		console.log(response);
+	        photo.comments = response.comments;  
+		photos.commentsRetrieved++;
+        });
+}
+
+//needs to be tested
+function addComments(photos){
+	photos.commentsRetrieved = 0;
+
+	for(var i = 0; i < photos.length; i++){
+		getPhotoComments(photos[i], photos);
+	}
+
+	while(photos.commentsRetrieved != photos.length);
+	return;
+};
+
+//determines likelihood that a user commented on the photo with the intention of resurfacing it
+function resurfacedPhotoWeight(photo){
+
+}
+
+//analyzes comments to determine sentience. funny/gibberish results in higher return values
+function commentSentientWeight(photo){
+
+}
+
+//judges the photos embarrassing value based on comment analysis
+function embarrassingWeight(photo){
+
+}
 
 getPhotos(-1, userPhotos);
 
@@ -54,4 +91,15 @@ setTimeout(function(){
 
 	console.log(userPhotos.length);
 	console.log(duplicates);
+
+	var tempPhotos = [];
+	tempPhotos.push(userPhotos[2]);
+	tempPhotos.push(userPhotos[8]);
+	tempPhotos.push(userPhotos[5]);
+	tempPhotos.push(userPhotos[7]);
+	tempPhotos.push(userPhotos[1]);
+
+	console.log(tempPhotos);
+	addComments(tempPhotos);
+	console.log(tempPhotos);
 }, 10000);
