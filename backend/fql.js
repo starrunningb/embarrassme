@@ -113,8 +113,8 @@ setTimeout(function(){
 	}, 1000);
 	
 	var filtered = getFilteredLikes(userPhotos);
-	/*for(var i = 0; i < filtered.length; i++)
-		console.log(filtered[i].link);*/
+	for(var i = 0; i < filtered.length; i++)
+		console.log(filtered[i].link);
 
 	console.log(filtered.length);
 }, 20000);
@@ -138,9 +138,8 @@ function getFilteredLikes(photos) {
 	}
 	photos = (heapObj.sort(likes, photos))[1];
 	for (var i = 0; i < 50; i++) {
-		topPhotos[topPhotos.length] = photos[topPhotos.length - i - 1];
+		topPhotos[topPhotos.length] = photos[photos.length - i - 1];
 	}
-	console.log(topPhotos);
 	return topPhotos;
 }
 
