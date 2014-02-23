@@ -7,9 +7,9 @@ FB.setAccessToken(accesstoken);
 
 var userPhotos = [];
 
-var tolerance = 0;
-var like_weight = 0.6;
-var comment_weight = 0.4;
+var tolerance = .3;
+var like_weight = 1.0;
+var comment_weight = 0.0;
 var heapObj = new Heap();
 
 //Retrieves up to 400 photos of a user's tagged photos dating newestTime (epoch time) or older. -1 for newestTime to get newest photos. 
@@ -114,13 +114,6 @@ setTimeout(function(){
 	console.log(filtered.length);
 }, 10000);
 
-
-
-var tolerance = 0.5;
-var like_weight = 0.6;
-var comment_weight = 0.4;
-var heapObj = new Heap();
-
 function weighting(obj1, obj2, tolerance) {
 	var delta = function(x1, x2) {
 		return (x2 - x1) / (Math.max(x1, x2));
@@ -131,7 +124,11 @@ function weighting(obj1, obj2, tolerance) {
 }
 
 function getFilteredLikes(photos) {
-	var topPhotos = [], weights = [];
+	var topPhotos = [], weights = [], times = [];
+	for (var obji = 0; obji < photos.length; obji++) {
+		times[times.length] = photos[obji].created;
+	}
+	photos = heapObj.sort(times, photos);
 	for (var obji = 0; obji < photos.length - 1; obji++) {
 		var obj1 = photos[obji];
 		var obj2 = photos[obji + 1];
