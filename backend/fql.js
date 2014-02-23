@@ -137,6 +137,10 @@ function getFilteredLikes(photos) {
 		times[times.length] = photos[i].created;
 	}
 	photos = (heapObj.sort(times, photos))[1];
+	var old_weight_gradient = [];
+	for (var i = 0; i < photos.length; i++) {
+		old_weight_gradient = 1.0 - ((i / photos.length) / 2);
+	}
 	//console.log(photos);
 	for (var obji = 0; obji < photos.length - 1; obji++) {
 		var obj1 = photos[obji];
@@ -148,6 +152,8 @@ function getFilteredLikes(photos) {
 		if (obj1.comment_info.comment_count < 2) {
 			continue;
 		}
+		w += old_weight_gradient[obji];
+		w /= 2.0;
 		if (w < tolerance) {
 			//console.log("adding photo with weight [" + w + "]");
 			topPhotos[topPhotos.length] = obj1;
