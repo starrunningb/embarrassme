@@ -1,4 +1,4 @@
-var FB = require('../../fb');
+var FB = require('./fb');
 
 var accesstoken = "CAACEdEose0cBAJLnhDr6DS9ZBGsYYL5PR9m3LZASjq0GyJO84UrQqLNwJlZBLxKZBD8U15FY5kxM0vrXwAw3pjZAHSQ5UH0GC8uXmi3YNBXZAkCZCtHnNYfMys3o79xPln7Rcb05uvPxY30O5lRTtXDG3uf6CoXwSdQIoyzX6ZCQHCiRZAAzNeFdnLkowKX4JoFgZD";
 
