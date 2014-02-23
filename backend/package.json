@@ -16,6 +16,6 @@
   },
   "dependencies": {
     "jade": "*",
-    "express": "3.x",
+    "express": "3.x"
   }
 }
