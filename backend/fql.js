@@ -127,7 +127,7 @@ function weighting(obj1, obj2, tolerance) {
 	}
 	var dl = Math.max(delta(obj2.like_info.like_count, obj1.like_info.like_count), 0);
 	var dc = Math.max(delta(obj2.comment_info.comment_count, obj1.comment_info.comment_count), 0);
-	return dl * like_weight + dc * comment_weight;
+	return Math.max(dl * like_weight + dc * comment_weight, 0);
 }
 
 function getFilteredLikes(photos) {
@@ -136,6 +136,12 @@ function getFilteredLikes(photos) {
 		var obj1 = photos[obji];
 		var obj2 = photos[obji + 1];
 		var w = weighting(obj1, obj2);
+		if (obj1.like_info.like_count < 3) {
+			continue;
+		}
+		if (obj1.comment_info.comment_count < 2) {
+			continue;
+		}
 		if (w < tolerance) {
 			topPhotos[topPhotos.length] = obj1;
 			weights[weights.length] = w;
