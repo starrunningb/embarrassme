@@ -143,6 +143,7 @@ function getFilteredLikes(photos) {
 			continue;
 		}
 		if (w < tolerance) {
+			console.log("adding photo with weight [" + w + "]");
 			topPhotos[topPhotos.length] = obj1;
 			weights[weights.length] = w;
 		}
