@@ -6,6 +6,11 @@ FB.setAccessToken(accesstoken);
 
 var userPhotos = [];
 
+var tolerance = 0.5;
+var like_weight = 0.6;
+var comment_weight = 0.4;
+var heapObj = new Heap();
+
 //Retrieves up to 400 photos of a user's tagged photos dating newestTime (epoch time) or older. -1 for newestTime to get newest photos. 
 function getPhotos(newestTime, photos){
 	var query1string = "SELECT pid,created FROM photo_tag WHERE subject=me()";
@@ -16,7 +21,7 @@ function getPhotos(newestTime, photos){
 		    method: 'fql.multiquery',
 		    queries: {
 			'query1': query1string,
-			'query2': 'SELECT object_id, like_info, link, pid, created FROM photo WHERE pid IN (SELECT pid FROM #query1)'
+			'query2': 'SELECT object_id, like_info, link, pid, created, comment_info FROM photo WHERE pid IN (SELECT pid FROM #query1)'
 		    }
 	}, function(response) {
 		    // response should have 2 objects in it, both containing an fql_result_set 
@@ -102,4 +107,110 @@ setTimeout(function(){
 	console.log(tempPhotos);
 	addComments(tempPhotos);
 	console.log(tempPhotos);
+
+	var filtered = getFilteredLikes(photos);
+	console.log(filtered);
 }, 10000);
+
+
+
+var tolerance = 0.5;
+var like_weight = 0.6;
+var comment_weight = 0.4;
+var heapObj = new Heap();
+
+function weighting(obj1, obj2, tolerance) {
+	var delta = function(x1, x2) {
+		return (x2 - x1) / (Math.max(x1, x2));
+	}
+	var dl = delta(obj2.like_info.like_count, obj1.like_info.like_count);
+	var dc = delta(obj2.comment_info.comment_count, obj1.comment_info.comment_count);
+	return dl * like_weight + dc * comment_weight;
+}
+
+function getFilteredLikes(photos) {
+	var topPhotos = [], weights = [];
+	for (var obji = 0; obji < photos.length - 1; obji++) {
+		var obj1 = photos[obji];
+		var obj2 = photos[obji + 1];
+		var w = weighting(obj1, obj2);
+		if (w > tolerance) {
+			topPhotos[topPhotos.length] = obj1;
+			weights[weights.length] = w;
+		}
+	}
+	var results = heapObj.sort(weights, topPhotos);
+	return results[1];
+}
+
+
+function Heap() {
+	function hparent(index) {
+		return Math.floor((index - 1) / 2);
+	}
+	function lchild(index) {
+		return index * 2 + 1;
+	}
+	function rchild(index) {
+		return index * 2 + 2;
+	}
+	function SWAP(array, index1, index2) {
+		var temp = array[index1];
+		array[index1] = array[index2];
+		array[index2] = temp;
+		return array;
+	}
+	function siftUp(array1, array2, index) {
+		while (index != 0) {
+			if (array1[index] > array1[hparent(index)]) {
+				array1 = SWAP(array1, index, hparent(index));
+				array2 = SWAP(array2, index, hparent(index));
+				index = hparent(index);
+			} else {
+				break;
+			}
+		}
+		return [array1, array2];
+	}
+	function siftDown(array1, array2, index) {
+		var ptr = 0;
+		var end = index - 1;
+		array1 = SWAP(array1, 0, index);
+		array2 = SWAP(array2, 0, index);
+		while (ptr < end) {
+			var new_index = lchild(ptr);
+			if (new_index == index) {
+				break;
+			}
+			if (rchild(ptr) < index && array1[lchild(ptr)] < array1[rchild(ptr)]) {
+				new_index = rchild(ptr);
+			}
+			if (new_index < index && array1[new_index] > array1[ptr]) {
+				array1 = SWAP(array1, ptr, new_index);
+				array2 = SWAP(array2, ptr, new_index);
+				ptr = new_index;
+			} else {
+				break;
+			}
+		}
+		return [array1, array2];
+	}
+	function heapSort(array1, array2) {
+		for (var i = 0; i < array1.length; i++) {
+			var moor = siftUp(array1, array2, i);
+			array1 = moor[0];
+			array2 = moor[1];
+		}
+		var i = 0;
+		for (var i = 0; i < array1.length; i++) {
+			var moor = siftDown(array1, array2, array1.length - i - 1);
+			array1 = moor[0];
+			array2 = moor[1];
+		}
+		return [array1, array2];
+	}
+	this.sort = function (array1, array2) {
+		var result = heapSort(array1, array2);
+		return result;
+	}
+}
