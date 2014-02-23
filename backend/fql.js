@@ -113,11 +113,11 @@ setTimeout(function(){
 	}, 1000);
 	
 	var filtered = getFilteredLikes(userPhotos);
-	for(var i = 0; i < filtered.length; i++)
-		console.log(filtered[i].link);
+	/*for(var i = 0; i < filtered.length; i++)
+		console.log(filtered[i].link);*/
 
 	console.log(filtered.length);
-}, 10000);
+}, 20000);
 
 
 
@@ -126,42 +126,22 @@ function weighting(obj1, obj2, tolerance) {
 	var delta = function(x1, x2) {
 		return (x2 - x1) / (Math.max(x1, x2));
 	}
-	var dl = Math.max(delta(obj2.like_info.like_count, obj1.like_info.like_count), 0);
-	var dc = Math.max(delta(obj2.comment_info.comment_count, obj1.comment_info.comment_count), 0);
+	var dl = Math.max(delta(Number(obj2.like_info.like_count), Number(obj1.like_info.like_count)), 0);
+	var dc = Math.max(delta(Number(obj2.comment_info.comment_count), Number(obj1.comment_info.comment_count)), 0);
 	return Math.max(dl * like_weight + dc * comment_weight, 0);
 }
 
 function getFilteredLikes(photos) {
-	var topPhotos = [], weights = [], times = [];
+	var topPhotos = [], likes = [];
 	for (var i = 0; i < photos.length; i++) {
-		times[times.length] = photos[i].created;
+		likes[likes.length] = Number(photos[i].like_info.like_count);
 	}
-	photos = (heapObj.sort(times, photos))[1];
-	var old_weight_gradient = [];
-	for (var i = 0; i < photos.length; i++) {
-		old_weight_gradient = 1.0 - ((i / photos.length) / 2);
+	photos = (heapObj.sort(likes, photos))[1];
+	for (var i = 0; i < 50; i++) {
+		topPhotos[topPhotos.length] = photos[topPhotos.length - i - 1];
 	}
-	//console.log(photos);
-	for (var obji = 0; obji < photos.length - 1; obji++) {
-		var obj1 = photos[obji];
-		var obj2 = photos[obji + 1];
-		var w = weighting(obj1, obj2);
-		if (obj1.like_info.like_count < 3) {
-			continue;
-		}
-		if (obj1.comment_info.comment_count < 2) {
-			continue;
-		}
-		w += old_weight_gradient[obji];
-		w /= 2.0;
-		if (w < tolerance) {
-			//console.log("adding photo with weight [" + w + "]");
-			topPhotos[topPhotos.length] = obj1;
-			weights[weights.length] = w;
-		}
-	}
-	var results = heapObj.sort(weights, topPhotos);
-	return results[1];
+	console.log(topPhotos);
+	return topPhotos;
 }
 
 
