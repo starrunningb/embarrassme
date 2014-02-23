@@ -99,24 +99,18 @@ setTimeout(function(){
 	console.log(userPhotos.length);
 	console.log(duplicates);
 
-	var tempPhotos = [];
-	tempPhotos.push(userPhotos[2]);
-	tempPhotos.push(userPhotos[8]);
-	tempPhotos.push(userPhotos[5]);
-	tempPhotos.push(userPhotos[7]);
-	tempPhotos.push(userPhotos[1]);
-
-	addComments(tempPhotos);
+	var filtered = getFilteredLikes(userPhotos);
+	addComments(filtered);
 
 	setTimeout(function(){
-//		console.log(tempPhotos);
-	}, 1000);
-	
-	var filtered = getFilteredLikes(userPhotos);
+		console.log("COMMENT TERMINATE");
+		console.log(filtered);
+	}, 5000);
+/*
 	for(var i = 0; i < filtered.length; i++)
 		console.log(filtered[i].link);
-
 	console.log(filtered.length);
+*/
 }, 20000);
 
 
