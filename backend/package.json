@@ -1,0 +1,21 @@
+{
+  "name": "embarrassme",
+  "description": "hackTCNJ spring 2014",
+  "version": "0.0.1",
+  "author": "Eric Song",
+  "scripts": {
+    "start": "server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ericsong/embarrassme"
+  },
+  "engines": {
+    "node": "0.8.x",
+    "npm": "1.2.x"
+  },
+  "dependencies": {
+    "jade": "*",
+    "express": "3.x",
+  }
+}
