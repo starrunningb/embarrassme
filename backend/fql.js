@@ -1,7 +1,6 @@
 var FB = require('./fb');
 
-
-var accesstoken = "CAACEdEose0cBABpw34V2oZCh945ZCYW6OZB8v6AE69kKpksZBRwEAW2wO3n5iqsnTvd3dypAFnEFYuS8SFd1Ps4B1KhDZAWHTTKIB28cHeSuqCu03aUcntJteVauTwTcNngFx6Hhk3hQVbbFW44e0cXbqf2OeKgwg7kohyBeRDVhdUW9FoBihOa00IJuXT1AZD";
+var accesstoken = "CAACEdEose0cBAHnmqxq4PD4bgpZAktxuU5QiIG5Jgz2h8Cu1ZCwyiZCXeOMG6A4DLFvqug7Uz8WacZCKT6oa3ZBBaRbn1lxDyszp03u8TxkEVLGtw4sKRBTRBC3x425GbRijJNZAnmG8dDfCGoMbJkZB2nQpIV9mqmVf1BbNBQuKJidlT6GxBf0VrkyUx9xPYQZD";
 
 FB.setAccessToken(accesstoken);
 
