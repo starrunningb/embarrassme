@@ -1,14 +1,15 @@
 var FB = require('./fb');
 
-var accesstoken = "CAACEdEose0cBAHnmqxq4PD4bgpZAktxuU5QiIG5Jgz2h8Cu1ZCwyiZCXeOMG6A4DLFvqug7Uz8WacZCKT6oa3ZBBaRbn1lxDyszp03u8TxkEVLGtw4sKRBTRBC3x425GbRijJNZAnmG8dDfCGoMbJkZB2nQpIV9mqmVf1BbNBQuKJidlT6GxBf0VrkyUx9xPYQZD";
 
+//var accesstoken = "CAACEdEose0cBABpw34V2oZCh945ZCYW6OZB8v6AE69kKpksZBRwEAW2wO3n5iqsnTvd3dypAFnEFYuS8SFd1Ps4B1KhDZAWHTTKIB28cHeSuqCu03aUcntJteVauTwTcNngFx6Hhk3hQVbbFW44e0cXbqf2OeKgwg7kohyBeRDVhdUW9FoBihOa00IJuXT1AZD";
+var accesstoken = "CAACEdEose0cBAHnmqxq4PD4bgpZAktxuU5QiIG5Jgz2h8Cu1ZCwyiZCXeOMG6A4DLFvqug7Uz8WacZCKT6oa3ZBBaRbn1lxDyszp03u8TxkEVLGtw4sKRBTRBC3x425GbRijJNZAnmG8dDfCGoMbJkZB2nQpIV9mqmVf1BbNBQuKJidlT6GxBf0VrkyUx9xPYQZD";
 FB.setAccessToken(accesstoken);
 
 var userPhotos = [];
 
-var tolerance = .3;
-var like_weight = 1.0;
-var comment_weight = 0.0;
+var tolerance = 0.5;
+var like_weight = 0.6;
+var comment_weight = 0.4;
 var heapObj = new Heap();
 
 //Retrieves up to 400 photos of a user's tagged photos dating newestTime (epoch time) or older. -1 for newestTime to get newest photos. 
@@ -28,6 +29,11 @@ function getPhotos(newestTime, photos){
 		    // array with the data and the name you entered for the query (i.e. 'query1')
 		var latestTime;
 		var responseLength;
+		if (response.error_code) {
+			console.log(response);
+		} else {
+			console.log("response ready to go");
+		}
 
 		for(var i = 0; i < response[1].fql_result_set.length; i++){
 			userPhotos.push(response[1].fql_result_set[i]);
@@ -113,6 +119,9 @@ setTimeout(function(){
 	console.log(filtered.length);
 }, 10000);
 
+
+
+
 function weighting(obj1, obj2, tolerance) {
 	var delta = function(x1, x2) {
 		return (x2 - x1) / (Math.max(x1, x2));
@@ -124,10 +133,11 @@ function weighting(obj1, obj2, tolerance) {
 
 function getFilteredLikes(photos) {
 	var topPhotos = [], weights = [], times = [];
-	for (var obji = 0; obji < photos.length; obji++) {
-		times[times.length] = photos[obji].created;
+	for (var i = 0; i < photos.length; i++) {
+		times[times.length] = photos[i].created;
 	}
-	photos = heapObj.sort(times, photos);
+	photos = (heapObj.sort(times, photos))[1];
+	//console.log(photos);
 	for (var obji = 0; obji < photos.length - 1; obji++) {
 		var obj1 = photos[obji];
 		var obj2 = photos[obji + 1];
@@ -139,7 +149,7 @@ function getFilteredLikes(photos) {
 			continue;
 		}
 		if (w < tolerance) {
-			console.log("adding photo with weight [" + w + "]");
+			//console.log("adding photo with weight [" + w + "]");
 			topPhotos[topPhotos.length] = obj1;
 			weights[weights.length] = w;
 		}
