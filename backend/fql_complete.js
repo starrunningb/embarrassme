@@ -1,6 +1,6 @@
-var FB = require('../../fb');
+var FB = require('./fb');
 
-var accesstoken = "CAACEdEose0cBAJLnhDr6DS9ZBGsYYL5PR9m3LZASjq0GyJO84UrQqLNwJlZBLxKZBD8U15FY5kxM0vrXwAw3pjZAHSQ5UH0GC8uXmi3YNBXZAkCZCtHnNYfMys3o79xPln7Rcb05uvPxY30O5lRTtXDG3uf6CoXwSdQIoyzX6ZCQHCiRZAAzNeFdnLkowKX4JoFgZD";
+var accesstoken = "CAACEdEose0cBALjXnr9FVrivMkFUA4uknJcLjZCFbta7MzVoKKZAwPylHJ6YjjrsZAiR2fTU0AoX07DQJ1Me0HskPRDH9ZBm4owwFUilTRvObYr6MPjM4RL72ZBNORhkdhCZAyZCmvJ8yDYU1Ssr22WPe15wthqNH9BTszidyZCZBtvZB7ZCFwcTFcZADoZAQJhZA8CGoZD";
 
 FB.setAccessToken(accesstoken);
 
@@ -16,7 +16,7 @@ function getPhotos(newestTime, photos){
 		    method: 'fql.multiquery',
 		    queries: {
 			'query1': query1string,
-			'query2': 'SELECT like_info, link, created FROM photo WHERE pid IN (SELECT pid FROM #query1)'
+			'query2': 'SELECT like_info, link, pid, created FROM photo WHERE pid IN (SELECT pid FROM #query1)'
 		    }
 	}, function(response) {
 		    // response should have 2 objects in it, both containing an fql_result_set 
@@ -26,6 +26,7 @@ function getPhotos(newestTime, photos){
 
 		for(var i = 0; i < response[1].fql_result_set.length; i++){
 			userPhotos.push(response[1].fql_result_set[i]);
+			console.log(response[1].fql_result_set[i]);
 
 			if(i == response[1].fql_result_set.length-1)
 				latestTime = response[1].fql_result_set[i].created;

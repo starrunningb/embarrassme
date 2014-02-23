@@ -1,21 +1,13 @@
 {
-  "name": "embarrassme",
-  "description": "hackTCNJ spring 2014",
+  "name": "scrumptious",
   "version": "0.0.1",
-  "author": "Eric Song",
+  "private": true,
   "scripts": {
-    "start": "server.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/ericsong/embarrassme"
-  },
-  "engines": {
-    "node": "0.8.x",
-    "npm": "1.2.x"
+    "start": "node app"
   },
   "dependencies": {
-    "jade": "*",
-    "express": "3.x"
+    "express": "3.1.0",
+    "ejs": "*",
+    "step": "0.0.5"
   }
 }
